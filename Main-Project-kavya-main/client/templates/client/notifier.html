@@ -1,0 +1,35 @@
+
+<html>
+  <head>
+    <title>Notifier</title>
+    {% load static %}
+    <script src="{% static 'js/websocketbridge.js' %}"></script>
+    {% comment %} <link rel=”stylesheet” href=”{% static 'css/dept_emp_style.css' %}”> {% endcomment %}
+    {% comment %} <script src="./websocketbridge.js" type="text/javascript"></script> {% endcomment %}
+  </head>
+  <body>
+    <h1>Notifier</h1>
+    <p>Notifications</p>
+    <ul id="notifylist"></ul>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      const webSocketBridge = new channels.WebSocketBridge();
+      
+      let url = `ws://${window.location.host}/ws/notifications/`
+      webSocketBridge.connect(url);
+      const nl = document.querySelector("#notifylist");
+      webSocketBridge.listen(function(action, stream) {
+        console.log("RESPONSE:", action);
+        if(action.event == 'New Notification') {
+          console.log('yes');
+          var el = document.createElement("li");
+          el.innerHTML = `New accident at <b>${action.payload.location}, ${action.payload.city}</b> detected!`;
+          nl.after(el);
+        }
+      })
+      document.ws = webSocketBridge; /* for debugging */
+    })
+    </script>
+  </body>
+</html>

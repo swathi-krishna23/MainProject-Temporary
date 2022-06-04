@@ -1,0 +1,43 @@
+{% extends 'client/base.html' %}
+
+{% block content %}
+
+    <h2 class="text center" style="margin-left: 20px;"> Search Results:  </h5>
+
+        <hr>
+
+        <div class="container">
+
+            <div class="row justify-content-center m-4">
+
+                {% if result %}
+                    <table class="text-center">
+                        <tr>
+                            <th class="mr-5">camera_id - city</th>
+                            <th class="mr-3">frame_id</th>
+                            <th class="mr-3">crash_time</th>
+                            <th class="mr-3">video</th>
+                        </tr>
+                    {% for item in result %}
+                        {% comment %} {% print(item) %} {% endcomment %}
+                        <tr> 
+                            <td>{{ item.camera_id }}</td>
+                            <td>{{ item.frame_id }}</td>
+                            <td>{{ item.crash_time }}</td>
+                            <td>{{ item.video }}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+        
+               
+        
+                {% else %}
+                     <p>No Results available </p>
+                {% endif %}
+    
+            </div>
+
+        </div>
+
+
+{% endblock %}

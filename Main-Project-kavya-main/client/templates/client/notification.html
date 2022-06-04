@@ -1,0 +1,32 @@
+{% extends 'client/base.html' %}
+{% comment %} {% block head %}
+{% load static %}
+    <script src="{% static 'js/websocketbridge.js' %}"></script>
+{% endblock %} {% endcomment %}
+
+{% block content %}
+<h1>Notifier</h1>
+    <p>Notifications</p>
+    <ul id="notifylist"></ul>
+    {% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      const webSocketBridge = new channels.WebSocketBridge();
+      
+      let url = `ws://${window.location.host}/ws/notifications/`
+      webSocketBridge.connect(url);
+      const nl = document.querySelector("#notifylist");
+      webSocketBridge.listen(function(action, stream) {
+        console.log("RESPONSE:", action);
+        if(action.event == 'New Notification') {
+          console.log('yes');
+          var el = document.createElement("li");
+          el.innerHTML = `<a href=${ url = '/client/view/' }>New accident at <b>${action.payload.location}, ${action.payload.city}</b> detected!</a>`;
+          nl.after(el);
+        }
+      })
+      document.ws = webSocketBridge; /* for debugging */
+    })
+    </script> {% endcomment %}
+
+{% endblock %}

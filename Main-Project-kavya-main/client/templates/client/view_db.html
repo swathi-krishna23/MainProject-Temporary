@@ -1,0 +1,66 @@
+{% extends 'client/base.html' %}
+{% block title %}Entries{% endblock %}
+{% block head %}
+{% load static %}
+    <script src="{% static 'js/websocketbridge.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+{% if camera_info %}
+<table>
+    <tr>
+        <th>camera_id</th>
+        <th>city</th>
+        <th>location</th>
+    </tr>
+    {% for item in camera_info %}
+    <tr> 
+        <td>{{ item.camera_id }}</td>
+        <td>{{ item.city }}</td>
+        <td>{{ item.location }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+    <p>No Camera_info are available.</p>
+{% endif %}
+
+{% if crashed_frames %}
+<table>
+    <tr>
+        <th>camera_id</th>
+        <th>frame_id</th>
+        <th>crash_time</th>
+    </tr>
+    {% for item in crashed_frames %}
+    <tr> 
+        <td>{{ item.camera_id }}</td>
+        <td>{{ item.frame_id }}</td>
+        <td>{{ item.crash_time }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+    <p>No Crashed_frames are available.</p>
+{% endif %}
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+        
+        const nl = document.querySelector("#notifylist");
+        webSocketBridge.listen(function(action, stream) {
+          console.log("RESPONSE:", action);
+          if(action.event == 'New Notification') {
+            console.log('yes');
+            var el = document.createElement("li");
+            el.innerHTML = `<a href=${ url = '/client/view/' }>New accident at <b>${action.payload.location}, ${action.payload.city}</b> detected!</a>`;
+            nl.after(el);
+          }
+        })
+        document.ws = webSocketBridge; /* for debugging */
+      })
+    </script> {% endcomment %}
+
+{% endblock %}
